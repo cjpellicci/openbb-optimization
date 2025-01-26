@@ -6,7 +6,7 @@ from pydantic import BaseModel, Field
 from openbb_core.provider.abstract.data import Data
 
 
-class PerTickerAllocation(BaseModel):
+class PerSymbolAllocation(BaseModel):
     """Per-asset level data"""
 
     weight: float = Field(..., description="Portfolio weight in [0,1].")
@@ -27,9 +27,9 @@ class OptimizerResult(Data):
     Final output model for an optimized portfolio.
     """
 
-    allocations: Dict[str, PerTickerAllocation] = Field(
+    allocations: Dict[str, PerSymbolAllocation] = Field(
         default_factory=dict,
-        description="Mapping from ticker -> sub-model with weight, returns, etc.",
+        description="Mapping from symbol -> sub-model with weight, returns, etc.",
     )
 
     stats: PortfolioStats = Field(
