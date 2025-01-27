@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "openbb-optimization"
 version = "0.0.1"
-description = ""
+description = "Optimization Toolkit for OpenBB"
 authors = ["Christian Pellicci <cjpellicci@gmail.com>"]
 readme = "README.md"
 packages = [{ include = "openbb_optimization" }]
@@ -19,7 +19,4 @@ requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.plugins."openbb_core_extension"]
-openbb_optimization = "openbb_optimization.router:router"
-
-# [tool.poetry.plugins."openbb_provider_extension"]
-# openbb_optimization = "openbb_optimization.provider:provider"
+optimization = "openbb_optimization.router:router"

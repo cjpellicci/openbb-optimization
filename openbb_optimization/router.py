@@ -4,12 +4,12 @@ from typing import List
 
 from openbb_core.app.router import Router
 from openbb_core.app.model.obbject import OBBject
-from openbb_optimization.aggregator import _get_multi_asset_data
+from openbb_optimization.aggregator import _aggregate_asset_data
 from openbb_optimization.features.mean_variance import _mpt_optimize
 from openbb_optimization.models.optimizer_query_params import OptimizerQueryParams
 from openbb_optimization.models.optimizer_result import OptimizerResult
 
-router = Router(prefix="")
+router = Router(prefix="", description="Portfolio optimization tools.")
 
 
 @router.command()
@@ -32,7 +32,7 @@ async def mean_variance(
     )
 
     # Fetch combined data
-    df = await _get_multi_asset_data(params)
+    df = await _aggregate_asset_data(params)
     # Run optimization
     result = await _mpt_optimize(df, params)
 

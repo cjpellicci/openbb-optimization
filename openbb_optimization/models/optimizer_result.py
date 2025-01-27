@@ -1,38 +1,36 @@
-"""Results model to combine asset weights and portfolio-level
-stats into one JSON-structured result object"""
+"""Optimizer Result Standard Model."""
 
-from typing import Dict, Optional
-from pydantic import BaseModel, Field
+from typing import List
+from pydantic import Field
 from openbb_core.provider.abstract.data import Data
 
-
-class PerSymbolAllocation(BaseModel):
-    """Per-asset level data"""
-
-    weight: float = Field(..., description="Portfolio weight in [0,1].")
-    expected_return: Optional[float] = None
-    risk: Optional[float] = None
-
-
-class PortfolioStats(BaseModel):
-    """Portfolio-level metrics"""
-
-    expected_return: Optional[float] = None
-    volatility: Optional[float] = None
-    sharpe_ratio: Optional[float] = None
-
+class AllocationData(Data):
+    """Individual allocation data for a symbol."""
+    
+    symbol: str = Field(description="The security's symbol")
+    weight: float = Field(description="Portfolio weight allocation")
+    excess_return: float = Field(description="Expected return contribution in excess of risk-free rate")
+    volatility: float = Field(description="Individual volatility")
+    sharpe_ratio: float = Field(description="Individual Sharpe ratio")
+    
+class PortfolioStatsData(Data):
+    """Overall portfolio statistics"""
+    
+    excess_return: float = Field(description="Portfolio's expected return in excess of risk-free rate")
+    volatility: float = Field(description="Portfolio volatility")
+    sharpe_ratio: float = Field(description="Portfolio Sharpe ratio")
 
 class OptimizerResult(Data):
     """
     Final output model for an optimized portfolio.
     """
 
-    allocations: Dict[str, PerSymbolAllocation] = Field(
-        default_factory=dict,
-        description="Mapping from symbol -> sub-model with weight, returns, etc.",
+    allocations: List[AllocationData] = Field(
+        default_factory=list,
+        description="List of allocation data for each symbol"
     )
-
-    stats: PortfolioStats = Field(
-        default_factory=PortfolioStats,
-        description="Overall portfolio metrics (expected return, volatility, etc.)",
+    
+    stats: PortfolioStatsData = Field(
+        default_factory=PortfolioStatsData,
+        description="Overall portfolio metrics"
     )
